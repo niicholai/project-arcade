@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Variables - Sunset/Galactic Color Palette */
+:root {
+  /* Sunset Colors */
+  --sunset-orange: #ff6b35;
+  --sunset-pink: #ff8cc8;
+  --sunset-purple: #9d4edd;
+  --sunset-blue: #0077be;
+  --sunset-deep-blue: #003366;
+  
+  /* Galactic Colors */
+  --cosmic-purple: #6a0572;
+  --cosmic-indigo: #3d0a4e;
+  --cosmic-navy: #1a0033;
+  --cosmic-teal: #00b4d8;
+  --cosmic-lavender: #c77dff;
+  
+  /* Glass Colors */
+  --glass-white: rgba(255, 255, 255, 0.1);
+  --glass-white-strong: rgba(255, 255, 255, 0.2);
+  --glass-dark: rgba(0, 0, 0, 0.3);
+  --glass-dark-strong: rgba(0, 0, 0, 0.5);
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  
+  /* Gradients */
+  --gradient-sunset: linear-gradient(135deg, var(--sunset-deep-blue) 0%, var(--cosmic-purple) 25%, var(--sunset-purple) 50%, var(--sunset-pink) 75%, var(--sunset-orange) 100%);
+  --gradient-cosmic: linear-gradient(135deg, var(--cosmic-navy) 0%, var(--cosmic-indigo) 50%, var(--cosmic-purple) 100%);
+  --gradient-glass: linear-gradient(135deg, var(--glass-white) 0%, var(--glass-white-strong) 100%);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--gradient-sunset);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Utility Classes */
+.glass {
+  background: var(--glass-white);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-strong {
+  background: var(--glass-white-strong);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.glass-dark {
+  background: var(--glass-dark);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.glass-card {
+  background: var(--glass-white);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: var(--glass-white-strong);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  transform: translateY(-4px);
+}
+
+/* Animated Background */
+.cosmic-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-sunset);
+  z-index: -2;
+}
+
+.cosmic-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, var(--cosmic-teal) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--cosmic-lavender) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, var(--sunset-pink) 0%, transparent 50%);
+  opacity: 0.3;
+}
+
+/* Button Styles */
+.btn-primary {
+  background: var(--gradient-sunset);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.btn-secondary {
+  background: var(--glass-white);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--glass-white-strong);
+  transform: translateY(-2px);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--glass-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-white);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--glass-white-strong);
+}
