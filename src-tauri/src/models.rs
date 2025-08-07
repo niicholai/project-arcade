@@ -1,9 +1,5 @@
 use serde::{Deserialize, Serialize};
-use sqlx::{FromRow, SqlitePool};
-
-pub struct AppState {
-    pub db: SqlitePool,
-}
+use sqlx::FromRow;
 
 #[derive(Debug, FromRow, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
@@ -29,6 +25,9 @@ pub struct Game {
     pub metacritic_score: Option<i32>,
     pub steam_rating_percent: Option<i32>,
     pub steam_rating_text: Option<String>,
+    pub age_rating: Option<String>, // ESRB rating like "E10+", "T", "M"
+    pub screenshots: Option<String>, // JSON array of screenshot URLs
+    pub videos: Option<String>, // JSON array of video IDs
     pub time_to_beat: Option<i32>, // In hours
     pub install_size: Option<i64>, // In bytes
 }

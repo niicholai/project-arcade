@@ -1,42 +1,66 @@
-//! `config.json` management commands
+use std::sync::OnceLock;
 use serde::{Deserialize, Serialize};
-use std::{fs, path::PathBuf};
+use tauri::AppHandle;
+use crate::Result;
 
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct AppConfig {
-    pub install_directory: Option<String>,
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Config {
+    pub install_path: Option<String>,
+    pub theme: Option<String>,
 }
 
-fn get_config_path(app_handle: &tauri::AppHandle) -> crate::Result<PathBuf> {
-    let path = app_handle
-        .path_resolver()
-        .app_data_dir()
-        .ok_or_else(|| crate::Error::Config("Could not resolve app data directory".into()))?;
-    if !path.exists() {
-        fs::create_dir_all(&path)?;
-    }
-    Ok(path.join("config.json"))
+#[derive(Debug)]
+pub struct ApiConfig {
+    pub igdb_client_id: String,
+    pub igdb_client_secret: String,
+    pub giant_bomb_api_key: String,
 }
 
-fn read_config(path: &PathBuf) -> crate::Result<AppConfig> {
-    if !path.exists() {
-        return Ok(AppConfig::default());
-    }
-    let content = fs::read_to_string(path)?;
-    let config: AppConfig = serde_json::from_str(&content)?;
-    Ok(config)
+static API_CONFIG: OnceLock<ApiConfig> = OnceLock::new();
+
+pub fn init_api_config() {
+    let _ = API_CONFIG.set(ApiConfig {
+        igdb_client_id: String::from("sv7yvq6pvsvc2kanwmaqxwmpe7d7ql"),
+        igdb_client_secret: String::from("3pu41ddsqlf1lakehfbb211dtz38e2"),
+        giant_bomb_api_key: String::from("6646a4b9c58d6f5eafddefb1213f2d4e35da2882"),
+    });
 }
 
-#[tauri::command]
-pub async fn get_config(app_handle: tauri::AppHandle) -> crate::Result<AppConfig> {
-    let path = get_config_path(&app_handle)?;
-    read_config(&path)
+pub fn get_api_config() -> &'static ApiConfig {
+    API_CONFIG.get().expect("API config not initialized")
 }
 
 #[tauri::command]
-pub async fn save_config(app_handle: tauri::AppHandle, config: AppConfig) -> crate::Result<()> {
-    let path = get_config_path(&app_handle)?;
-    let content = serde_json::to_string_pretty(&config)?;
-    fs::write(path, content)?;
+pub async fn get_config(app_handle: AppHandle) -> Result<Config> {
+    let path = app_handle.path_resolver().app_config_dir()
+        .ok_or_else(|| anyhow::anyhow!("Failed to get config directory"))?;
+
+    std::fs::create_dir_all(&path)?;
+    let config_path = path.join("config.json");
+
+    if !config_path.exists() {
+        let default_config = Config {
+            install_path: None,
+            theme: None,
+        };
+        let config_json = serde_json::to_string_pretty(&default_config)?;
+        std::fs::write(&config_path, config_json)?;
+        Ok(default_config)
+    } else {
+        let config_str = std::fs::read_to_string(&config_path)?;
+        let config = serde_json::from_str(&config_str)?;
+        Ok(config)
+    }
+}
+
+#[tauri::command]
+pub async fn save_config(app_handle: AppHandle, config: Config) -> Result<()> {
+    let path = app_handle.path_resolver().app_config_dir()
+        .ok_or_else(|| anyhow::anyhow!("Failed to get config directory"))?;
+
+    std::fs::create_dir_all(&path)?;
+    let config_path = path.join("config.json");
+    let config_json = serde_json::to_string_pretty(&config)?;
+    std::fs::write(&config_path, config_json)?;
     Ok(())
 }

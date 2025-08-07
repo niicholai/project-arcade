@@ -37,7 +37,7 @@ async fn install_game_task(app_handle: AppHandle, id: i64, db: sqlx::SqlitePool)
         .await?;
 
     let config = config::get_config(app_handle.clone()).await?;
-    let install_directory = config.install_directory.ok_or_else(|| {
+    let install_directory = config.install_path.ok_or_else(|| {
         crate::Error::Config("Installation directory is not set.".to_string())
     })?;
 

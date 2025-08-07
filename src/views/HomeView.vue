@@ -24,17 +24,11 @@ const recentActivity = ref<Array<{ title: string; playtime: string; action: stri
         <div class="nav-left">
           <h1 class="app-title">
             <span class="title-main">Project Arcade</span>
-            <span class="title-sub">Your Personal Game Library</span>
+            <span class="title-sub">A gift to my gaming goddess</span>
           </h1>
         </div>
         
         <div class="nav-right">
-          <button @click="showAddModal = true" class="btn-primary nav-btn">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            Add Game
-          </button>
           <RouterLink to="/settings" class="btn-secondary nav-btn">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
@@ -48,21 +42,8 @@ const recentActivity = ref<Array<{ title: string; playtime: string; action: stri
 
     <!-- Main Content Area -->
     <main class="main-area">
-      <!-- Side Panel for Recent Activity -->
+      <!-- Side Panel for Library Stats -->
       <aside v-if="libraryStore.games.length > 0" class="side-panel glass">
-        <h3 class="panel-title">Recent Activity</h3>
-        <div v-if="recentActivity.length > 0" class="activity-list">
-          <div v-for="activity in recentActivity" :key="activity.title" class="activity-item">
-            <div class="activity-info">
-              <span class="activity-game">{{ activity.title }}</span>
-              <span class="activity-meta">{{ activity.action }} • {{ activity.playtime }}</span>
-            </div>
-          </div>
-        </div>
-        <div v-else class="no-activity">
-          <p class="text-muted">No recent activity yet</p>
-        </div>
-        
         <div class="stats-section">
           <h4 class="stats-title">Library Stats</h4>
           <div class="stats-grid">
@@ -70,11 +51,12 @@ const recentActivity = ref<Array<{ title: string; playtime: string; action: stri
               <span class="stat-number">{{ libraryStore.games.length }}</span>
               <span class="stat-label">Games</span>
             </div>
-            <div class="stat-item">
-              <span class="stat-number">{{ libraryStore.games.filter(g => g.status === 'Installed').length }}</span>
-              <span class="stat-label">Installed</span>
-            </div>
           </div>
+        </div>
+        
+        <!-- Olivia Image -->
+        <div class="olivia-image-container">
+          <img src="/src/assets/images/olivia1.png" alt="Olivia" class="olivia-image">
         </div>
       </aside>
 
@@ -82,18 +64,11 @@ const recentActivity = ref<Array<{ title: string; playtime: string; action: stri
       <section class="library-section">
         <!-- Library Header -->
         <div class="library-header">
-          <h2 class="library-title">Your Library</h2>
-          <div class="view-controls">
-            <button class="view-btn active">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-              </svg>
-            </button>
-            <button class="view-btn">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
-              </svg>
-            </button>
+          <div class="welcome-background glass">
+            <h2 class="library-title">
+              <span class="welcome-part">Welcome back,</span>
+              <span class="olivia-part"> Olivia.</span>
+            </h2>
           </div>
         </div>
 
@@ -203,7 +178,7 @@ const recentActivity = ref<Array<{ title: string; playtime: string; action: stri
   border-radius: 16px;
   height: fit-content;
   position: sticky;
-  top: 120px;
+  top: 100px;
 }
 
 .panel-title {
@@ -287,43 +262,89 @@ const recentActivity = ref<Array<{ title: string; playtime: string; action: stri
   color: var(--text-muted);
 }
 
+/* Olivia Image */
+.olivia-image-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.olivia-image {
+  width: 80%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 /* Library Section */
 .library-section {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 140px); /* Increased space to prevent cutoff */
 }
 
 .library-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .library-title {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-primary);
+  margin: 0;
 }
 
-.view-controls {
+.welcome-part {
+  background: linear-gradient(135deg, #003366 0%, #6a0572 50%, #ff6b35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.olivia-part {
+  background: linear-gradient(135deg, #003366 0%, #6a0572 50%, #ff6b35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-background {
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  width: 780px; /* Match the games grid width exactly */
+  margin-left: none;
+  margin-right: none;
+  text-align: center;
   display: flex;
-  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
 }
 
-.view-btn {
-  padding: 0.5rem;
-  background: var(--glass-white);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
+/* Games Grid */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 140px);
+  gap: 1rem;
+  justify-content: center;
+  align-content: start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  padding-bottom: 2rem; /* Only bottom padding for scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  width: fit-content; /* Only as wide as needed */
 }
 
-.view-btn:hover,
-.view-btn.active {
-  background: var(--glass-white-strong);
-  color: var(--text-primary);
+.games-grid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 /* Loading State */
@@ -359,6 +380,19 @@ const recentActivity = ref<Array<{ title: string; playtime: string; action: stri
   text-align: center;
   padding: 4rem 2rem;
   color: var(--text-secondary);
+  background: var(--glass-white);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: none !important;
+  transform: none !important;
+}
+
+.empty-state:hover {
+  transform: none !important;
+  background: var(--glass-white) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
 }
 
 .empty-icon {
@@ -376,13 +410,6 @@ const recentActivity = ref<Array<{ title: string; playtime: string; action: stri
 .empty-state p {
   margin-bottom: 2rem;
   font-size: 1rem;
-}
-
-/* Games Grid */
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
 }
 
 /* Responsive Design */
@@ -420,8 +447,21 @@ const recentActivity = ref<Array<{ title: string; playtime: string; action: stri
   }
   
   .games-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, 150px);
     gap: 1rem;
+    justify-content: center;
+  }
+}
+
+/* Large screen adjustments for better alignment */
+@media (min-width: 1200px) {
+  .games-grid {
+    gap: 1.25rem;
+    justify-content: start;
+  }
+  
+  .library-header {
+    margin-bottom: 1.5rem;
   }
 }
 </style>

@@ -11,7 +11,7 @@ pub async fn get_games(state: tauri::State<'_, AppState>) -> Result<Vec<Game>> {
 /// A helper to decide if we need to trigger a background fetch.
 fn needs_metadata_fetch(game: &Game) -> bool {
     // In a real app, this could be much more comprehensive.
-    game.description.is_none() || game.release_date.is_none() || game.metacritic_score.is_none()
+    game.description.is_none() || game.release_date.is_none()
 }
 
 #[tauri::command]
@@ -53,16 +53,10 @@ pub async fn add_game_manually(
     igdb_id: i64,
     state: tauri::State<'_, AppState>,
 ) -> Result<Game> {
-    let title = std::path::Path::new(&file_path)
-        .file_stem()
-        .and_then(|s| s.to_str())
-        .unwrap_or("Unknown Title")
-        .to_string();
-
-    // Insert the game with the minimal info we have.
+    // Insert the game with a placeholder title that will be updated by metadata fetch
     let new_game_id =
         sqlx::query("INSERT INTO games (title, source_path, igdb_id, status) VALUES (?, ?, ?, ?)")
-            .bind(&title)
+            .bind("Loading...")
             .bind(&file_path)
             .bind(igdb_id)
             .bind("Ready to Install")
@@ -97,4 +91,42 @@ pub async fn add_game_manually(
     });
 
     Ok(game)
+}
+
+#[tauri::command]
+pub async fn remove_game(
+    id: i64,
+    state: tauri::State<'_, AppState>,
+) -> Result<()> {
+    sqlx::query("DELETE FROM games WHERE id = ?")
+        .bind(id)
+        .execute(&state.db)
+        .await?;
+    
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn refresh_metadata(
+    app_handle: tauri::AppHandle,
+    id: i64,
+    state: tauri::State<'_, AppState>,
+) -> Result<()> {
+    println!("Refresh metadata command called for game ID: {}", id);
+    
+    let db_pool = state.db.clone();
+    let handle = app_handle.clone();
+    
+    tokio::spawn(async move {
+        println!("Starting metadata refresh for game ID: {}", id);
+        if let Err(e) =
+            crate::services::metadata::fetch_and_update_metadata(id, db_pool, handle).await
+        {
+            eprintln!("Failed to refresh metadata for game {}: {}", id, e);
+        } else {
+            println!("Metadata refresh completed successfully for game ID: {}", id);
+        }
+    });
+    
+    Ok(())
 }
