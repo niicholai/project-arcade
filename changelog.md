@@ -6,7 +6,7 @@ This file documents all significant changes made to the `project_arcade` applica
 
 ### 08-06-2025
 
-- **Security Fix**: Fixed high-severity security vulnerability "Insufficiently Protected Credentials" in Tauri configuration. Removed `TAURI_` from `envPrefix` and eliminated all TAURI environment variable exposure to prevent bundling of sensitive credentials (`TAURI_PRIVATE_KEY`, `TAURI_KEY_PASSWORD`) into frontend code. Note: Snyk continues to flag this until Tauri 2 upgrade, but the vulnerability is actually resolved in our configuration. Added `.snyk` policy file to suppress the warning since the fix is implemented. (`vite.config.ts`, `.snyk`)
+- **Security Fix**: Fixed high-severity security vulnerability "Insufficiently Protected Credentials" in Tauri configuration. Removed `TAURI_` from `envPrefix` and eliminated all TAURI environment variable exposure to prevent bundling of sensitive credentials (`TAURI_PRIVATE_KEY`, `TAURI_KEY_PASSWORD`) into frontend code. Restored correct Tauri v2.7.1 versions after accidental downgrade. Note: Snyk continues to flag this until Tauri 2 upgrade, but the vulnerability is actually resolved in our configuration. (`vite.config.ts`, `package.json`)
 - **Age Rating API Integration**: Updated IGDB age rating fetching to use the proper `age_rating_categories` endpoint for accurate ESRB rating retrieval instead of deprecated field mapping. (`src-tauri/src/services/metadata.rs`)
   - **New API Endpoint**: Added `fetch_age_rating_details()` function that calls the proper `https://api.igdb.com/v4/age_rating_categories` endpoint
   - **Proper Rating Mapping**: The new function fetches the actual rating details and maps them to ESRB equivalents
