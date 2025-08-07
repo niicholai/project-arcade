@@ -92,7 +92,7 @@ const selectFolder = async () => {
                     <!-- Installation Directory -->
                     <section class="form-section">
                         <h2 class="section-title">
-                            <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
                             </svg>
                             Game Installation
@@ -133,7 +133,7 @@ const selectFolder = async () => {
                     <!-- Future Settings Sections -->
                     <section class="form-section">
                         <h2 class="section-title">
-                            <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
                             Metadata & Integration
@@ -144,7 +144,7 @@ const selectFolder = async () => {
 
                         <div class="form-group">
                             <div class="info-box">
-                                <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                                 <div>
@@ -192,7 +192,17 @@ const selectFolder = async () => {
 <style scoped>
 .settings-container {
     min-height: 100vh;
+    height: 100vh;
     background: var(--gradient-cosmic);
+    display: flex;
+    flex-direction: column;
+    transition: none !important;
+    transform: none !important;
+    overflow: hidden;
+}
+
+.settings-container:hover {
+    transform: none !important;
 }
 
 /* Navigation */
@@ -220,7 +230,6 @@ const selectFolder = async () => {
 
 .back-btn:hover {
     background: var(--glass-white-strong);
-    transform: translateX(-2px);
 }
 
 /* Main Content */
@@ -228,12 +237,27 @@ const selectFolder = async () => {
     padding: 2rem;
     display: flex;
     justify-content: center;
+    overflow-y: auto;
+    max-height: 100vh;
 }
 
 .settings-card {
     width: 100%;
     max-width: 800px;
+    height: 1000px;
     padding: 2rem;
+    background: var(--glass-white);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.settings-card:hover {
+    transform: none !important;
+    background: var(--glass-white) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Header */
@@ -250,10 +274,10 @@ const selectFolder = async () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 1rem;
-    height: 1rem;
+    width: 2rem;
+    height: 2rem;
     background: var(--gradient-sunset);
-    border-radius: 6px;
+    border-radius: 12px;
     color: white;
 }
 
@@ -297,6 +321,7 @@ const selectFolder = async () => {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    flex: 1;
 }
 
 .form-section {
@@ -304,25 +329,16 @@ const selectFolder = async () => {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     background: var(--glass-white);
-    transition: none !important; /* Remove any inherited transitions */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: none !important;
     transform: none !important;
 }
 
 .form-section:hover {
-    /* Completely prevent all hover effects */
+    transform: none !important;
     background: var(--glass-white) !important;
     border-color: rgba(255, 255, 255, 0.1) !important;
-    transform: none !important;
-    box-shadow: none !important;
-    opacity: 1 !important;
-}
-
-.form-section * {
-    transition: none !important;
-}
-
-.form-section *:hover {
-    transform: none !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
 }
 
 .section-title {
@@ -377,14 +393,11 @@ const selectFolder = async () => {
     border-radius: 12px;
     color: var(--text-primary);
     font-size: 1rem;
-    transition: all 0.2s ease;
 }
 
 .form-input:focus {
     outline: none;
     border-color: var(--cosmic-teal);
-    background: var(--glass-white-strong);
-    box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
 }
 
 .form-input::placeholder {

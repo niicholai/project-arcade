@@ -20,6 +20,9 @@ export interface Game {
     metacriticScore?: number;
     steamRatingPercent?: number;
     steamRatingText?: string;
+    ageRating?: string;
+    screenshots?: string; // JSON array of screenshot URLs
+    videos?: string; // JSON array of video IDs
     timeToBeat?: number;
     installSize?: number;
 }

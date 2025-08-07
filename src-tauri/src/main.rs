@@ -15,6 +15,9 @@ pub use error::{Error, Result};
 pub use state::AppState;
 
 fn main() {
+    // Initialize API configuration
+    config::init_api_config();
+    
     tauri::Builder::default()
         .setup(|app| {
             let handle = app.handle();
@@ -41,6 +44,8 @@ fn main() {
             commands::library::get_games,
             commands::library::get_game_details,
             commands::library::add_game_manually,
+            commands::library::remove_game,
+            commands::library::refresh_metadata,
             commands::installer::install_game,
             commands::installer::launch_game,
             config::get_config,

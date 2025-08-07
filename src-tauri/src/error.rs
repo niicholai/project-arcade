@@ -19,6 +19,9 @@ pub enum Error {
 
     #[error("Configuration Error: {0}")]
     Config(String),
+
+    #[error(transparent)]
+    Anyhow(#[from] anyhow::Error),
 }
 
 impl serde::Serialize for Error {
